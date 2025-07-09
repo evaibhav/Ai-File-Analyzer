@@ -2,6 +2,7 @@
 
 A modern web application that allows users to upload documents and get intelligent analysis using AI. Built with Flask, Python, and Ollama for local AI processing.
 
+![File Analyzer]![WEB-PAGE](image.png)
 ![File Analyzer Demo](https://img.shields.io/badge/Demo-Live-brightgreen) ![Python](https://img.shields.io/badge/Python-3.7+-blue) ![Flask](https://img.shields.io/badge/Flask-2.3+-red) ![Ollama](https://img.shields.io/badge/Ollama-AI-purple)
 
 ## ✨ Features
