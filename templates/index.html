@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Analyzer - AI-Powered Document Analysis</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🔍 File Analyzer</h1>
+        <p>Upload any document and get AI-powered analysis</p>
+      </header>
+
+      <div class="upload-section">
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="file">Choose File to Analyze:</label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              accept=".txt,.pdf,.docx,.xlsx,.csv"
+              required
+            />
+            <div class="file-info">
+              <small
+                >Supported formats: TXT, PDF, DOCX, XLSX, CSV (Max: 16MB)</small
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="prompt">Analysis Prompt:</label>
+            <textarea
+              id="prompt"
+              name="prompt"
+              placeholder="What would you like to analyze? (e.g., 'Summarize the main points', 'Extract key insights', 'Analyze sentiment', 'Find important data patterns')"
+              required
+            >
+{{ prompt if prompt }}</textarea
+            >
+          </div>
+
+          <button type="submit" class="analyze-btn">
+            <span class="btn-text">Analyze File</span>
+            <span class="btn-icon">🚀</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Flash messages -->
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+        <div class="alert alert-error">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+
+      <!-- Analysis Results -->
+      {% if analysis %}
+      <div class="results-section">
+        <h2>📊 Analysis Results</h2>
+        <div class="file-details">
+          <strong>File:</strong> {{ filename }}<br />
+          <strong>Analysis Request:</strong> {{ prompt }}
+        </div>
+        <div class="analysis-content">
+          <h3>AI Analysis:</h3>
+          <div class="analysis-text">
+            {{ analysis|replace('\n', '<br />')|safe }}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="features-section">
+        <h2>✨ Features</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3>📄 Multiple Formats</h3>
+            <p>Support for TXT, PDF, DOCX, XLSX, and CSV files</p>
+          </div>
+          <div class="feature-card">
+            <h3>🤖 AI-Powered</h3>
+            <p>Uses Ollama for intelligent document analysis</p>
+          </div>
+          <div class="feature-card">
+            <h3>🔒 Secure</h3>
+            <p>Files are processed locally and deleted after analysis</p>
+          </div>
+          <div class="feature-card">
+            <h3>⚡ Fast</h3>
+            <p>Quick processing with immediate results</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="instructions">
+        <h2>📋 How to Use</h2>
+        <ol>
+          <li>Select a file to analyze (TXT, PDF, DOCX, XLSX, or CSV)</li>
+          <li>
+            Enter your analysis prompt (what you want to know about the file)
+          </li>
+          <li>Click "Analyze File" and wait for AI-powered results</li>
+          <li>View the detailed analysis below</li>
+        </ol>
+      </div>
+    </div>
+
+    <script>
+      // Add file upload preview
+      document.getElementById("file").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const fileInfo = document.querySelector(".file-info");
+          fileInfo.innerHTML = `
+                    <small>Selected: ${file.name} (${(
+            file.size /
+            1024 /
+            1024
+          ).toFixed(2)} MB)</small>
+                `;
+        }
+      });
+
+      // Add loading state to button
+      document.querySelector("form").addEventListener("submit", function (e) {
+        const button = document.querySelector(".analyze-btn");
+        button.innerHTML = `
+                <span class="btn-text">Analyzing...</span>
+                <span class="btn-icon">⏳</span>
+            `;
+        button.disabled = true;
+      });
+    </script>
+  </body>
+</html>
