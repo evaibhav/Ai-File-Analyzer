@@ -4,3 +4,6 @@ python-docx==0.8.11
 PyPDF2==3.0.1
 openpyxl==3.1.2
 pandas
+nltk==3.8.1
+textstat==0.7.3
+langdetect==1.0.9

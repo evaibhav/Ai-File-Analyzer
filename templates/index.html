@@ -130,14 +130,55 @@
         }
       });
 
-      // Add loading state to button
+      // Add loading state to button with progress
       document.querySelector("form").addEventListener("submit", function (e) {
         const button = document.querySelector(".analyze-btn");
+        const form = document.querySelector("form");
+
+        // Show loading state
         button.innerHTML = `
-                <span class="btn-text">Analyzing...</span>
+                <span class="btn-text">Processing...</span>
                 <span class="btn-icon">⏳</span>
             `;
         button.disabled = true;
+
+        // Add progress indicator
+        const progressDiv = document.createElement("div");
+        progressDiv.className = "progress-indicator";
+        progressDiv.innerHTML = `
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">Extracting text from file...</div>
+            `;
+        form.appendChild(progressDiv);
+
+        // Simulate progress updates
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+          progress += Math.random() * 15;
+          if (progress > 90) progress = 90;
+
+          const progressFill = document.querySelector(".progress-fill");
+          const progressText = document.querySelector(".progress-text");
+
+          if (progressFill) {
+            progressFill.style.width = progress + "%";
+
+            if (progress < 30) {
+              progressText.textContent = "Extracting text from file...";
+            } else if (progress < 60) {
+              progressText.textContent = "Processing content...";
+            } else {
+              progressText.textContent = "Analyzing with AI...";
+            }
+          }
+        }, 500);
+
+        // Clear interval when page changes
+        window.addEventListener("beforeunload", () => {
+          clearInterval(progressInterval);
+        });
       });
     </script>
   </body>
